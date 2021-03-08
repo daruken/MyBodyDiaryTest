@@ -26,7 +26,7 @@ func apiServer() {
 
 	router.HandleFunc("/", apiServerStatus)
 	router.HandleFunc("/lookup", testShow).Methods("GET")
-	router.HandleFunc("/club", showClub).Methods("GET")
+	router.HandleFunc("/user_info", showUserInfo).Methods("GET")
 	log.Fatal(http.ListenAndServe(":28080", router))
 	fmt.Println("[" + time.Now().Format(time.RFC3339) + "][API Server started")
 }
@@ -47,19 +47,19 @@ func apiServerStatus(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, message)
 }
 
-func showClub(w http.ResponseWriter, r *http.Request) {
+func showUserInfo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
 	w.Header().Set("Content-Type", "application/json")
 
-	db, err = sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/epl_20_21")
+	db, err = sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/mybodydiary")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
 
-	result, err := db.Query("select name, stadium from club")
+	result, err := db.Query("select id, password, email from user_info")
 	if err != nil {
 		panic(err.Error())
 	}
