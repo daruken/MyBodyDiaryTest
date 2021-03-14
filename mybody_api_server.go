@@ -13,8 +13,9 @@ import (
 )
 
 type Post struct {
-	NAME    string `json:"name"`
-	STADIUM string `json:"stadium"`
+	EMAIL    string `json:"email"`
+	ID       string `json:"id"`
+	PASSWORD string `json:"password"`
 }
 
 var db *sql.DB
@@ -27,7 +28,7 @@ func apiServer() {
 	router.HandleFunc("/", apiServerStatus)
 	router.HandleFunc("/lookup", testShow).Methods("GET")
 	router.HandleFunc("/user_info", showUserInfo).Methods("GET")
-	log.Fatal(http.ListenAndServe(":28080", router))
+	log.Fatal(http.ListenAndServe(":8080", router))
 	fmt.Println("[" + time.Now().Format(time.RFC3339) + "][API Server started")
 }
 
@@ -69,13 +70,13 @@ func showUserInfo(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var post Post
-		err := result.Scan(&post.NAME, &post.STADIUM)
+		err := result.Scan(&post.EMAIL, &post.ID)
 		if err != nil {
 			panic(err.Error())
 		}
 		posts = append(posts, post)
-		fmt.Print(post.NAME)
-		fmt.Println(" ", post.STADIUM)
+		fmt.Print(post.ID)
+		fmt.Println(" ", post.EMAIL)
 	}
 
 	json.NewEncoder(w).Encode(posts)

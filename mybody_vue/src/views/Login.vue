@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
   </div>
   <div class="login">
-    <form @submit.prevent="register">
+    <form @submit.prevent="login">
       <div>
       <label for="id">
         ID
@@ -22,7 +22,7 @@
         Login
       </button>
 
-      <router-link to="/register">
+      <router-link to="/signup">
         회원 가입
       </router-link>
     </form>
@@ -50,13 +50,11 @@ export default {
   margin-top -80px
   position relative
   display flex
-  flex-flex-direction columns
+  flex-direction columns
   justify-content center
   align-items center
 }
-.form {
-  width 300px
-}
+
 .form > div {
   display flex
   justify-content center
