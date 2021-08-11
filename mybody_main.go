@@ -1,6 +1,12 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/gorilla/mux"
+)
 
 func main() {
 	a := App{}
@@ -9,5 +15,9 @@ func main() {
 		os.Getenv("APP_DB_PASSWORD"),
 		os.Getenv("APP_DB_NAME"))
 
-	a.Run(":8080")
+	fmt.Println("Start server ...")
+	router := mux.NewRouter()
+	router.HandleFunc("/users", usersHandler).Methods("GET")
+
+	http.ListenAndServe(":8080", router)
 }

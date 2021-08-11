@@ -2,9 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"net/http"
 
 	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
 )
 
 type App struct {
@@ -15,3 +15,11 @@ type App struct {
 func (a *App) Initialize(user, password, dbname string) {}
 
 func (a *App) Run(addr string) {}
+
+func NewHandler() http.Handler {
+	mux := mux.NewRouter()
+
+	mux.HandleFunc("/users", usersHandler).Methods("GET")
+
+	return mux
+}
