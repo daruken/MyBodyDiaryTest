@@ -13,13 +13,11 @@ class User extends Component {
   componentDidMount() {
     console.log('in componentDidMount');
     this.getUsers();
-    console.log('after user : ' + JSON.stringify(this.state.user));
   }
 
   getUsers = async() => {
     const response = await axios.get('/users');
     const user = response.data;
-    console.log('in user : ' + JSON.stringify(user));
 
     this.setState({user});
   };
@@ -31,10 +29,10 @@ class User extends Component {
       <p>User list</p>
       {
       this.state.user.map((user) => {
-        return [
-          <p>ID : { user.id }</p>,
-          <p>Email : { user.email }</p>
-        ];
+        return <ul key={user.id}>
+          <p>ID : {user.id}</p>
+          <p>E-Mail : {user.email}</p>
+        </ul>
       })
       }
     </div>
