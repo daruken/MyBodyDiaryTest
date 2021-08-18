@@ -1,17 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 class User extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   state = {
     user : []
   };
 
   componentDidMount() {
-    console.log('in componentDidMount');
     this.getUsers();
   }
 
@@ -24,14 +19,14 @@ class User extends Component {
 
   render() {
     return <div>
-      <h2>User Page</h2>
+      <h2>사용자 정보</h2>
       
-      <p>User list</p>
+      <p>사용자 목록</p>
       {
       this.state.user.map((user) => {
         return <ul key={user.id}>
           <p>ID : {user.id}</p>
-          <p>E-Mail : {user.email}</p>
+          <p>이름 : {user.name}</p>
         </ul>
       })
       }

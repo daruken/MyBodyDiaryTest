@@ -21,14 +21,14 @@ func (p *userInfo) createUserInfo(db *sql.DB) error {
 	return errors.New("Not implemented")
 }
 
-func usersHandler(w http.ResponseWriter, r *http.Request) {
-	var email string
+func getUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 	var id string
+	var name string
 	var jsonArr []interface{}
 
 	db, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/mybodydiary")
 
-	rows, err := db.Query("SELECT email, id FROM user")
+	rows, err := db.Query("SELECT id, name FROM user")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +36,7 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&email, &id)
+		err := rows.Scan(&id, &name)
 
 		if err != nil {
 			log.Fatal(err)
@@ -49,8 +49,8 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		obj["email"] = email
 		obj["id"] = id
+		obj["name"] = name
 
 		jsonArr = append(jsonArr, obj)
 	}
@@ -59,4 +59,8 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 
 	jsonArrVal, _ := json.Marshal(jsonArr)
 	fmt.Fprint(w, string(jsonArrVal))
+}
+
+func createUserHandler(w http.ResponseWriter, r *http.Request) {
+
 }
