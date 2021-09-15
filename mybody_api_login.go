@@ -12,8 +12,8 @@ import (
 )
 
 type userInfo struct {
-	EMAIL    string `json:"email"`
 	ID       string `json:"id"`
+	NAME     string `json:"name"`
 	PASSWORD string `json:"password"`
 }
 
@@ -27,6 +27,9 @@ func getUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 	var jsonArr []interface{}
 
 	db, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/mybodydiary")
+	if err != nil {
+		log.Fatal("Cannot open DB connection", err)
+	}
 
 	rows, err := db.Query("SELECT id, name FROM user")
 	if err != nil {
@@ -62,5 +65,42 @@ func getUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
+	var jsonArr []interface{}
 
+	var user userInfo
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	db, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/mybodydiary")
+	if err != nil {
+		log.Fatal("Cannot open DB connection", err)
+	}
+
+	stmt, err := db.Query("insert into user values (?, SHA2(?, 256), ?, now())",
+		user.ID, user.PASSWORD, user.NAME)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer stmt.Close()
+	defer db.Close()
+
+	var obj map[string]interface{}
+	err_json := json.Unmarshal([]byte("{}"), &obj)
+	if err_json != nil {
+		fmt.Println(err_json)
+		return
+	}
+
+	obj["result"] = 0
+	obj["msg"] = "success"
+
+	jsonArr = append(jsonArr, obj)
+
+	jsonArrVal, _ := json.Marshal(jsonArr)
+	fmt.Fprint(w, string(jsonArrVal))
 }

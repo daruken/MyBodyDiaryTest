@@ -3,6 +3,8 @@ import './App.css';
 import { Home, Signin, Nav, UserList } from './pages';
 
 function App() {
+  document.title = "MyBodyDiary"
+
   return (
     <BrowserRouter>
       <Nav />

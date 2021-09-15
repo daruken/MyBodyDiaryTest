@@ -11,6 +11,7 @@ func main() {
 	fmt.Println("Start server ...")
 	router := mux.NewRouter()
 	router.HandleFunc("/users", getUserInfoHandler).Methods("GET")
+	router.HandleFunc("/users", createUserHandler).Methods("POST")
 
 	http.ListenAndServe(":8080", router)
 }
