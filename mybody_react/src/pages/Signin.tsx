@@ -24,7 +24,7 @@ const Signin = () => {
 
 
   const submitHandler = (e:any) => {
-    alert('!!!??? submit');
+    e.preventDefault();
 
     let body = {
       id: Id,
