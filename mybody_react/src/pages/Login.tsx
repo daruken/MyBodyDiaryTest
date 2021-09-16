@@ -2,19 +2,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const Signin = () => {
+const Login = () => {
   const [Id, SetId] = useState("");
-  const [Name, SetName] = useState("");
   const [Password, SetPassword] = useState("");
 
   const idHandler = (e: any) => {
     e.preventDefault();
     SetId(e.target.value);
-  };
-
-  const nameHandler = (e: any) => {
-    e.preventDefault();
-    SetName(e.target.value);
   };
 
   const passwordHandler = (e:any) => {
@@ -26,16 +20,10 @@ const Signin = () => {
     e.preventDefault();
 
     const idLength = Id.length;
-    const nameLength = Name.length;
     const passwordLength = Password.length;
 
     if ( idLength === 0 ) {
       alert('ID를 입력해 주세요.');
-      return;
-    }
-
-    if ( nameLength === 0 ) {
-      alert('이름을 입력해 주세요.');
       return;
     }
 
@@ -44,28 +32,12 @@ const Signin = () => {
       return;
     }
 
-    if ( idLength > 32 ) {
-      alert('ID가 길이 제한을 초과하였습니다.');
-      return;
-    }
-
-    if ( nameLength > 32 ) {
-      alert('이름이 길이 제한을 초과하였습니다.');
-      return;
-    }
-
-    if ( passwordLength > 32 ) {
-      alert('비밀번호가 길이 제한을 초과하였습니다.');
-      return;
-    }
-
     let body = {
       id: Id,
-      name: Name,
       password: Password,
     };
 
-    axios.post("/users", body)
+    axios.post("/login", body)
       .then((res) => {
         console.log(res.data.result)
       })
@@ -75,7 +47,7 @@ const Signin = () => {
   }
 
   return (<div>
-    <h2>회원 가입</h2>
+    <h2>로그인</h2>
       <form onSubmit={submitHandler}>
         ID : <Input name="id"
         value={Id}
@@ -83,14 +55,6 @@ const Signin = () => {
         width="380px"
         height="45px"
         placeholder="ID" />
-        <br/>
-
-        이름 : <Input name="name"
-        value={Name}
-        onChange={nameHandler}
-        width="380px"
-        height="45px"
-        placeholder="이름" />
         <br/>
 
         비밀번호 : <Input name="password"
@@ -102,7 +66,7 @@ const Signin = () => {
         type="password" />
         <br/>
 
-        <input type="submit" value="회원가입" />
+        <input type="submit" value="Login" />
       </form>
     </div>
   )
@@ -122,4 +86,4 @@ const Input = styled.input`
     }
 `;
 
-export default Signin;
+export default Login;

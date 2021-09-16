@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../css/style.css';
 
 interface IUser {
   id: string;
@@ -9,29 +10,41 @@ interface IUser {
 const defaultProps:IUser[] = [];
 
 function User() {
+  const columns = ["ID", "NAME"];
   const [users, setUsers]: [IUser[], (posts: IUser[]) => void] = useState(defaultProps);
 
   useEffect(() => {
     axios.get<IUser[]>("/users")
     .then(response => {
-        console.log(response.data);
         setUsers(response.data);
     });
   }, []);
 
   return (
     <div>
-    <h2>사용자 정보</h2>
- 
-    <p>사용자 목록</p>
-    {
-      users.map(user => (
-        <ul key={user.id}>
-          <p>ID : {user.id}</p>
-          <p>이름 : {user.name}</p>
-        </ul>
-      ))
-    }
+      <h2>사용자 정보</h2>
+  
+      <p>사용자 목록</p>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              {columns.map((column) => (
+                <th key={column}>{column}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {users && users.map(({ id, name }) => (
+              <tr key={id + name}>
+                <td>{id}</td>
+                <td>{name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 }

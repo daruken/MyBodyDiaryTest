@@ -6,6 +6,9 @@ function Nav() {
       <Link to="/">
         <button>메인 화면으로</button>
       </Link>
+      <Link to="/login">
+        <button>로그인 화면으로</button>
+      </Link>
       <Link to="/user">
         <button>유저 화면으로</button>
       </Link>
