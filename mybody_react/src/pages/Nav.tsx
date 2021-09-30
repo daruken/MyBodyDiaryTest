@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, Button } from "@mui/material";
 
 function Nav() {
   return (
     <>
-      <Link to="/">
-        <button>메인 화면으로</button>
+      <Link href="/">
+        <Button>메인 화면</Button>
       </Link>
-      <Link to="/login">
-        <button>로그인 화면으로</button>
+      <Link href="/login">
+        <Button>로그인 화면</Button>
       </Link>
-      <Link to="/user">
-        <button>유저 화면으로</button>
+      <Link href="/user">
+        <Button>유저 화면</Button>
       </Link>
-      <Link to="/signin">
-        <button>회원 가입 화면으로</button>
+      <Link href="/signin">
+        <Button>회원 가입 화면</Button>
       </Link>
     </>
   );

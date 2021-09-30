@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
+import Table from '@mui/material/Table';
+import TableContainer from '@mui/material/TableContainer';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import { TableRow, TableCell } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import axios from 'axios';
-import '../css/style.css';
 
 interface IUser {
   id: string;
@@ -25,25 +30,25 @@ function User() {
       <h2>사용자 정보</h2>
   
       <p>사용자 목록</p>
-      <div>
-        <table>
-          <thead>
+      <TableContainer component={Paper} sx={{ width: 650 }}>
+        <Table sx={{ width: 650 }} aria-label="simple table">
+          <TableHead>
             <tr>
               {columns.map((column) => (
                 <th key={column}>{column}</th>
               ))}
             </tr>
-          </thead>
-          <tbody>
+          </TableHead>
+          <TableBody>
             {users && users.map(({ id, name }) => (
-              <tr key={id + name}>
-                <td>{id}</td>
-                <td>{name}</td>
-              </tr>
+              <TableRow key={id + name}>
+                <TableCell align="right">{id}</TableCell>
+                <TableCell align="right">{name}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
     </div>
   );
