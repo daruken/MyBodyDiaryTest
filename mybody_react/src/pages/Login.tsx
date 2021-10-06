@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
 import axios from 'axios';
+import CSS from 'csstype';
 
 const Login = () => {
   const [Id, SetId] = useState("");
@@ -46,44 +48,32 @@ const Login = () => {
       });
   }
 
+  const buttonStyle: CSS.Properties = {
+    margin: '30px',
+    width: '100px'
+  }
+
   return (<div>
     <h2>로그인</h2>
       <form onSubmit={submitHandler}>
-        ID : <Input name="id"
+        <Input name="id"
         value={Id}
         onChange={idHandler}
-        width="380px"
-        height="45px"
         placeholder="ID" />
         <br/>
 
-        비밀번호 : <Input name="password"
+        <Input name="password"
         value={Password}
         onChange={passwordHandler}
-        width="380px"
-        height="45px"
         placeholder="비밀번호"
         type="password" />
         <br/>
 
-        <input type="submit" value="Login" />
+        <Button variant="contained" style={buttonStyle}>
+          Login</Button>
       </form>
     </div>
   )
 }
-
-const Input = styled.input`
-    border: 1px solid gray;
-    margin: 2px;
-    outline: none;
-    border-radius: 0px;
-    line-height: 2.0rem;
-    font-size: 1.2rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    ::placeholder {
-        color: gray;
-    }
-`;
 
 export default Login;
