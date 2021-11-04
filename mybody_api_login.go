@@ -65,8 +65,6 @@ func getUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
-	var jsonArr []interface{}
-
 	var user userInfo
 
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -99,8 +97,6 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	obj["result"] = 0
 	obj["msg"] = "success"
 
-	jsonArr = append(jsonArr, obj)
-
-	jsonArrVal, _ := json.Marshal(jsonArr)
-	fmt.Fprint(w, string(jsonArrVal))
+	jsonVal, _ := json.Marshal(obj)
+	fmt.Fprint(w, string(jsonVal))
 }
