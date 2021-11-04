@@ -3,8 +3,12 @@ import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import CSS from 'csstype';
+import PureModal from 'react-pure-modal';
+import 'react-pure-modal/dist/react-pure-modal.min.css';
 
 const Signin = () => {
+  const [modal, setModal] = useState(false);
+
   const [Id, SetId] = useState("");
   const [Name, SetName] = useState("");
   const [Password, SetPassword] = useState("");
@@ -69,7 +73,9 @@ const Signin = () => {
 
     axios.post("/users", body)
       .then((res) => {
-        console.log(res.data.result)
+        if (res.data.result === 0) {
+          setModal(true);
+        }
       })
       .catch((error) => {
         alert('error : ' + error);
@@ -106,6 +112,23 @@ const Signin = () => {
         <Button variant="contained" style={buttonStyle} type="submit">
           회원 가입</Button>
       </form>
+
+      <PureModal
+        header="회원 가입"
+        footer={
+          <div>
+            <button onClick={() => setModal(false)} >Ok</button>
+          </div>
+        }
+        isOpen={modal}
+        onClose={() => {
+          setModal(false);
+          return true;
+        }}
+      >
+        <p>회원 가입이 완료되었습니다.</p>
+      </PureModal>
+
     </div>
   )
 }
