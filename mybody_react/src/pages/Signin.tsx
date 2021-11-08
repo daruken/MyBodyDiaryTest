@@ -13,6 +13,12 @@ const Signin = () => {
   const [Name, SetName] = useState("");
   const [Password, SetPassword] = useState("");
 
+  const inputReset = () => {
+    SetId("");
+    SetName("");
+    SetPassword("");
+  }
+
   const idHandler = (e: any) => {
     e.preventDefault();
     SetId(e.target.value);
@@ -71,7 +77,7 @@ const Signin = () => {
       password: Password,
     };
 
-    axios.post("/users", body)
+    axios.post("/gateway/users", body)
       .then((res) => {
         if (res.data.result === 0) {
           setModal(true);
@@ -123,6 +129,8 @@ const Signin = () => {
         isOpen={modal}
         onClose={() => {
           setModal(false);
+          inputReset();
+
           return true;
         }}
       >

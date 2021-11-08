@@ -3,8 +3,11 @@ import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import CSS from 'csstype';
+import { useHistory } from 'react-router';
+
 
 const Login = () => {
+  let history = useHistory();
   const [Id, SetId] = useState("");
   const [Password, SetPassword] = useState("");
 
@@ -39,9 +42,13 @@ const Login = () => {
       password: Password,
     };
 
-    axios.post("/login", body)
+    axios.post("/gateway/login", body)
       .then((res) => {
-        console.log(res.data.result)
+        if (res.data.result === 0) {
+          history.push("/");
+        } else {
+          alert('Login failed.');
+        }
       })
       .catch((error) => {
         alert('error : ' + error);
@@ -57,19 +64,19 @@ const Login = () => {
     <h2>로그인</h2>
       <form onSubmit={submitHandler}>
         <Input name="id"
-        value={Id}
-        onChange={idHandler}
-        placeholder="ID" />
-        <br/>
+          value={Id}
+          onChange={idHandler}
+          placeholder="ID" />
+          <br/>
 
         <Input name="password"
-        value={Password}
-        onChange={passwordHandler}
-        placeholder="비밀번호"
-        type="password" />
-        <br/>
+          value={Password}
+          onChange={passwordHandler}
+          placeholder="비밀번호"
+          type="password" />
+          <br/>
 
-        <Button variant="contained" style={buttonStyle}>
+        <Button variant="contained" style={buttonStyle} type="submit">
           Login</Button>
       </form>
     </div>

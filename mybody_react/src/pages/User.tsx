@@ -19,7 +19,7 @@ function User() {
   const [users, setUsers]: [IUser[], (posts: IUser[]) => void] = useState(defaultProps);
 
   useEffect(() => {
-    axios.get<IUser[]>("/users")
+    axios.get<IUser[]>("/gateway/users")
     .then(response => {
         setUsers(response.data);
     });
