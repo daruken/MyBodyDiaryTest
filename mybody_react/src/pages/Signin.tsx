@@ -3,8 +3,9 @@ import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import CSS from 'csstype';
-import PureModal from 'react-pure-modal';
-import 'react-pure-modal/dist/react-pure-modal.min.css';
+import Modal from 'react-modal';
+import '../static/css/Style.css';
+
 
 const Signin = () => {
   const [modal, setModal] = useState(false);
@@ -17,6 +18,11 @@ const Signin = () => {
     SetId("");
     SetName("");
     SetPassword("");
+  }
+
+  const closeModal = () => {
+    inputReset();
+    setModal(false);
   }
 
   const idHandler = (e: any) => {
@@ -119,23 +125,17 @@ const Signin = () => {
           회원 가입</Button>
       </form>
 
-      <PureModal
-        header="회원 가입"
-        footer={
-          <div>
-            <button onClick={() => setModal(false)} >Ok</button>
-          </div>
-        }
+      <Modal
         isOpen={modal}
-        onClose={() => {
-          setModal(false);
-          inputReset();
-
-          return true;
-        }}
+        className="modalContent"
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+        contentLabel="Login"
       >
         <p>회원 가입이 완료되었습니다.</p>
-      </PureModal>
+
+        <Button onClick={closeModal}>Ok</Button>
+      </Modal>
 
     </div>
   )

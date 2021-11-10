@@ -4,10 +4,12 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import CSS from 'csstype';
 import { useHistory } from 'react-router';
+import Modal from 'react-modal';
+import '../static/css/Style.css';
 
 
 const Login = () => {
-  let history = useHistory();
+  const [modal, setModal] = useState(false);
   const [Id, SetId] = useState("");
   const [Password, SetPassword] = useState("");
 
@@ -45,7 +47,9 @@ const Login = () => {
     axios.post("/gateway/login", body)
       .then((res) => {
         if (res.data.result === 0) {
-          history.push("/");
+          setModal(true);
+
+          //history.push("/");
         } else {
           alert('Login failed.');
         }
@@ -79,6 +83,18 @@ const Login = () => {
         <Button variant="contained" style={buttonStyle} type="submit">
           Login</Button>
       </form>
+
+      <Modal
+        isOpen={modal}
+        className="modalContent"
+        onRequestClose={() => setModal(false)}
+        ariaHideApp={false}
+        contentLabel="Login"
+      >
+        <p>로그인이 완료되었습니다.</p>
+
+        <Button onClick={() => setModal(false)}>Ok</Button>
+      </Modal>
     </div>
   )
 }
