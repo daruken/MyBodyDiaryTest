@@ -134,7 +134,7 @@ const Signin = () => {
       >
         <p>회원 가입이 완료되었습니다.</p>
 
-        <Button onClick={closeModal}>Ok</Button>
+        <Button variant="contained" onClick={closeModal}>Ok</Button>
       </Modal>
 
     </div>

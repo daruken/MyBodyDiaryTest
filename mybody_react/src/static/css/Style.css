@@ -5,6 +5,18 @@
     top: 30%;
     left: 30%;
     width: 280px;
-    height: 120px;
+    height: 140px;
     text-align: center;
+}
+
+.modalContent div {
+    height: 30px;
+}
+
+.modalContent p {
+    margin-top: 30px;
+}
+
+.modalContent Button {
+    margin-top: 30px;
 }

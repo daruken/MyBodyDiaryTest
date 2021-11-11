@@ -3,7 +3,6 @@ import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import CSS from 'csstype';
-import { useHistory } from 'react-router';
 import Modal from 'react-modal';
 import '../static/css/Style.css';
 
@@ -91,9 +90,11 @@ const Login = () => {
         ariaHideApp={false}
         contentLabel="Login"
       >
-        <p>로그인이 완료되었습니다.</p>
+        <div>
+          <p>로그인이 완료되었습니다.</p>
+        </div>
 
-        <Button onClick={() => setModal(false)}>Ok</Button>
+        <Button variant="contained" onClick={() => setModal(false)}>Ok</Button>
       </Modal>
     </div>
   )

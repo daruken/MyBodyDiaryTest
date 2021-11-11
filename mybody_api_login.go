@@ -9,7 +9,7 @@ import (
 )
 
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
-	var user userInfo
+	var user UserInfo
 	var obj map[string]interface{}
 	err_json := json.Unmarshal([]byte("{}"), &obj)
 	if err_json != nil {

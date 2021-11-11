@@ -7,13 +7,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type userInfo struct {
+type ResponseUserInfo struct {
+	RET  int        `json:"result"`
+	USER []UserInfo `json:"user"`
+}
+
+type UserInfo struct {
 	ID       string `json:"id"`
 	NAME     string `json:"name"`
 	PASSWORD string `json:"password"`
@@ -31,7 +35,7 @@ func CheckUser(id string, pw string) int {
 	}
 	defer rows.Close()
 
-	var user = userInfo{}
+	var user = UserInfo{}
 
 	if !rows.Next() {
 		log.Fatal("Cannot find match id.", err)
@@ -49,55 +53,51 @@ func CheckUser(id string, pw string) int {
 	return 0
 }
 
-func (p *userInfo) createUserInfo(db *sql.DB) error {
+func (p *UserInfo) createUserInfo(db *sql.DB) error {
 	return errors.New("Not implemented")
 }
 
 func getUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 	var id string
 	var name string
-	var jsonArr []interface{}
+	var responseUserInfo ResponseUserInfo
 
 	db, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/mybodydiary")
 	if err != nil {
-		log.Fatal("Cannot open DB connection", err)
+		customError(w, -101, err.Error())
+
+		return
 	}
 
 	rows, err := db.Query("SELECT id, name FROM user")
 	if err != nil {
-		log.Fatal(err)
+		defer db.Close()
+		customError(w, -102, err.Error())
+
+		return
 	}
 
 	defer rows.Close()
 
 	for rows.Next() {
 		err := rows.Scan(&id, &name)
-
 		if err != nil {
-			log.Fatal(err)
-		}
-
-		var obj map[string]interface{}
-		err_json := json.Unmarshal([]byte("{}"), &obj)
-		if err_json != nil {
-			fmt.Println(err_json)
+			defer db.Close()
 			return
 		}
 
-		obj["id"] = id
-		obj["name"] = name
-
-		jsonArr = append(jsonArr, obj)
+		responseUserInfo.USER = append(responseUserInfo.USER, UserInfo{ID: id, NAME: name})
 	}
 
 	defer db.Close()
 
-	jsonArrVal, _ := json.Marshal(jsonArr)
+	responseUserInfo.RET = 0
+	jsonArrVal, _ := json.Marshal(responseUserInfo)
 	fmt.Fprint(w, string(jsonArrVal))
 }
 
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
-	var user userInfo
+	var user UserInfo
 	var obj map[string]interface{}
 	err_json := json.Unmarshal([]byte("{}"), &obj)
 	if err_json != nil {
@@ -137,16 +137,17 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(jsonVal))
 }
 
-type customErr struct {
-	Code    string
-	Message string
-}
+func customError(w http.ResponseWriter, errCode int, errMsg string) {
+	var errObj map[string]interface{}
+	err_json := json.Unmarshal([]byte("{}"), &errObj)
+	if err_json != nil {
+		fmt.Println(err_json)
+		return
+	}
 
-func (e *customErr) Error() string {
-	return e.Code + ", " + e.Message
-}
+	errObj["result"] = errCode
+	errObj["msg"] = errMsg
 
-func (e *customErr) StatusCode() int {
-	result, _ := strconv.Atoi(e.Code)
-	return result
+	jsonArrVal, _ := json.Marshal(errObj)
+	fmt.Fprint(w, string(jsonArrVal))
 }
